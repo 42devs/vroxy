@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String
+  salt      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Option {
+  id        String   @id @default(uuid())
+  parameter String
+  value     String
+  default   String
+  enable    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Proxy {
+  id              String   @id @default(uuid())
+  hostname        String   @unique
+  port            Int
+  healthcheckPath String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Healthchek {
+  id         String   @id @default(uuid())
+  statusCode Int
+  statusText String?
+  createdAt  DateTime @default(now())
+}

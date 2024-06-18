@@ -1,75 +1,20 @@
-# Nuxt 3 Minimal Starter
+# VRoxy
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A reverse proxy for docker containers using vuejs and nodejs
 
-## Setup
+[toc]
 
-Make sure to install the dependencies:
+## Install
 
-```bash
-# npm
-npm install
+## Development
 
-# pnpm
-pnpm install
+## Extras
 
-# yarn
-yarn install
+### Caveats
 
-# bun
-bun install
-```
+- this doen't gonna work if you are using avahi-daemon for the dns, so you need a FQDN (fully qualified domain name) 
 
-## Development Server
+### Docker on Mac
 
-Start the development server on `http://localhost:3000`:
+As the new TOS if you have a for profit company, llc or so, you must pay for the Docker support, so an alternative on mac to no use the Docker desktop, is [colima](https://github.com/abiosoft/colima)
 
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

@@ -4,14 +4,20 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --dotenv .env.dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "prisma:migrate:dev": "dotenv -e .env.dev -- npx primsma migrate deploy"
   },
   "dependencies": {
+    "@prisma/client": "5.15.0",
+    "dotenv-cli": "^7.4.2",
     "nuxt": "^3.11.2",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.15.0"
   }
 }

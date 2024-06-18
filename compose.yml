@@ -1,0 +1,7 @@
+services: 
+  vroxy-app:
+    build: .
+    container_name: vroxy
+    restart: unless-stopped
+    ports: 
+     - 3001:3001
