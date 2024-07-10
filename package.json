@@ -11,13 +11,16 @@
     "prisma:migrate:dev": "dotenv -e .env.dev -- prisma migrate deploy"
   },
   "dependencies": {
+    "@primevue/themes": "^4.0.0",
     "@prisma/client": "5.15.0",
     "dotenv-cli": "^7.4.2",
     "nuxt": "^3.12.3",
+    "primevue": "^4.0.0",
     "vue": "^3.4.31",
     "vue-router": "^4.4.0"
   },
   "devDependencies": {
+    "@primevue/nuxt-module": "^4.0.0",
     "prisma": "^5.16.2"
   }
 }

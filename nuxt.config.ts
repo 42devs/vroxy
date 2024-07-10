@@ -1,4 +1,20 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import Aura from '@primevue/themes/aura';
+
 export default defineNuxtConfig({
-  devtools: { enabled: true }
+  devtools: { enabled: true },
+
+  modules: [
+    '@primevue/nuxt-module',
+  ],
+
+  primevue: {
+    /* Configuration */
+    options: {
+      theme: {
+        preset: Aura
+      }
+    }
+  },
+
+  compatibilityDate: '2024-07-10'
 })
