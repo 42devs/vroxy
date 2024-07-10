@@ -3,9 +3,15 @@ import Aura from '@primevue/themes/aura';
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  modules: [
-    '@primevue/nuxt-module',
-  ],
+  css: ['~/assets/css/main.css'],
+
+  modules: ['@primevue/nuxt-module', "@nuxtjs/google-fonts"],
+
+  googleFonts: {
+    families: {
+      Roboto: true,
+    }
+  },
 
   primevue: {
     /* Configuration */
