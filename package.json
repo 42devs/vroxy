@@ -8,12 +8,15 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
+    "db:generate": "prisma generate",
+    "db:migrate": "dotenv -e .env.dev -- prisma migrate dev",
     "prisma:migrate:dev": "dotenv -e .env.dev -- prisma migrate deploy"
   },
   "dependencies": {
     "@nuxtjs/google-fonts": "^3.2.0",
     "@primevue/themes": "^4.0.0",
     "@prisma/client": "5.16.2",
+    "argon2": "^0.40.3",
     "dotenv-cli": "^7.4.2",
     "nuxt": "^3.12.3",
     "primevue": "^4.0.0",
