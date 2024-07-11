@@ -1,0 +1,27 @@
+{
+  "name": "cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/cli/src/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf ./dist",
+    "serve": "pnpm clean && pnpm build && dotenv -e ../.env.dev -- node .",
+    "build:dev": "tsc -w",
+    "serve:dev": "nodemon --no-stdin -q",
+    "dev": "concurrently \"pnpm:build:dev\" \"pnpm:serve:dev\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "dotenv-cli": "^7.4.2",
+    "nodemon": "^3.1.4",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^5.1.2"
+  }
+}
