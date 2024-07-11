@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare",
     "db:generate": "prisma generate",
     "db:migrate": "dotenv -e .env.dev -- prisma migrate dev",
+    "cli": "cd cli && pnpm serve",
     "prisma:migrate:dev": "dotenv -e .env.dev -- prisma migrate deploy"
   },
   "dependencies": {
