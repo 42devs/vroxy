@@ -12,6 +12,8 @@ const prisma = new PrismaClient({
 // Uses secret as pepper
 const secret = Buffer.from(process.env.MAIN_SECRET || 'localSecret');
 
+export const getUserCount = async () => await prisma.user.count();
+
 export const getUserByUsername = async (username: string) => {
   try {
     const user = await prisma.user.findUnique({
@@ -23,6 +25,20 @@ export const getUserByUsername = async (username: string) => {
   } catch (e) {
     throw new Error('User Not Found');
   }
+};
+
+export const getAllUsersByPage = async (size: number = 10, page : number = 1, take : number = 10) => {
+  const skip = size * (page - 1);
+  const userQuery = await prisma.user.findMany({
+    skip,
+    take,
+  });
+  return {
+    result: userQuery,
+    page,
+    previous: page > 1 ? page - 1 : undefined,
+    next: userQuery.length === take ? page + 1 : undefined,
+  };
 };
 
 export const createUser = async (username: string, password: string) => {
