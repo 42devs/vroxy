@@ -5,13 +5,16 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --dotenv .env.dev",
+    "lint": "eslint .",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "db:generate": "prisma generate",
     "db:migrate": "dotenv -e .env.dev -- prisma migrate dev",
     "cli": "cd cli && pnpm serve",
-    "prisma:migrate:dev": "dotenv -e .env.dev -- prisma migrate deploy"
+    "prisma:migrate:dev": "dotenv -e .env.dev -- prisma migrate deploy",
+    "lint-staged": "lint-staged",
+    "prepare": "husky"
   },
   "dependencies": {
     "@nuxt/eslint": "^0.3.13",
@@ -31,7 +34,12 @@
   },
   "devDependencies": {
     "@primevue/nuxt-module": "^4.0.0",
+    "husky": "^9.1.1",
+    "lint-staged": "^15.2.7",
     "prisma": "^5.16.2"
+  },
+  "lint-staged": {
+    "*": "eslint"
   },
   "packageManager": "pnpm@8.11.0+sha1.01bf39424f1008f29012bbae851d2acb8a20a0d0"
 }
