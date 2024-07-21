@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { publicProcedure, router } from '../trpc';
+import { publicProcedure, router } from '~/server/trpc/trpc';
 
 export const appRouter = router({
   hello: publicProcedure
@@ -14,6 +14,8 @@ export const appRouter = router({
         message: `Hi ${ctx.input.name}`,
       };
     }),
+  getAllUsers: publicProcedure.query(async ({ ctx }) => await ctx.prisma.user.findMany()),
+  getUserCount: publicProcedure.query(async ({ ctx }) => await ctx.prisma.user.count()),
 });
 
 export type AppRouter = typeof appRouter;

@@ -11,12 +11,10 @@
 <script setup lang="ts">
 const { $client } = useNuxtApp();
 
-const text = ref('hugo');
-
 const result = ref<unknown>({});
 
 const updateResult = async () => {
-  const queryResult = await $client.hello.query({ name: text.value });
+  const queryResult = await $client.getAllUsers.query();
   result.value = queryResult;
 };
 </script>
