@@ -17,12 +17,16 @@
     "@nuxtjs/google-fonts": "^3.2.0",
     "@primevue/themes": "^4.0.0",
     "@prisma/client": "5.16.2",
+    "@trpc/client": "^10.45.2",
+    "@trpc/server": "^10.45.2",
     "argon2": "^0.40.3",
     "dotenv-cli": "^7.4.2",
     "nuxt": "^3.12.3",
     "primevue": "^4.0.0",
+    "trpc-nuxt": "^0.10.22",
     "vue": "^3.4.31",
-    "vue-router": "^4.4.0"
+    "vue-router": "^4.4.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@primevue/nuxt-module": "^4.0.0",

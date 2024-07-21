@@ -3,6 +3,10 @@ import Aura from '@primevue/themes/aura';
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
+  build: {
+    transpile: ['trpc-nuxt'],
+  },
+
   css: ['~/assets/css/main.css'],
 
   modules: ['@primevue/nuxt-module', "@nuxtjs/google-fonts"],
