@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     '@primevue/nuxt-module',
     '@nuxtjs/google-fonts',
     '@nuxt/eslint',
+    '@nuxtjs/tailwindcss',
   ],
 
   googleFonts: {
