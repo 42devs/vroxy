@@ -1,4 +1,4 @@
-import Aura from '@primevue/themes/aura'
+import Aura from '@primevue/themes/aura';
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -32,9 +32,12 @@ export default defineNuxtConfig({
 
   eslint: {
     config: {
-      stylistic: true,
+      stylistic: {
+        // Improves readability on multi line nested functions such as TRPC
+        semi: true,
+      },
     },
   },
 
   compatibilityDate: '2024-07-10',
-})
+});
