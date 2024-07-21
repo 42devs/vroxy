@@ -1,4 +1,4 @@
-import Aura from '@primevue/themes/aura';
+import Aura from '@primevue/themes/aura'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -9,22 +9,32 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  modules: ['@primevue/nuxt-module', "@nuxtjs/google-fonts"],
+  modules: [
+    '@primevue/nuxt-module',
+    '@nuxtjs/google-fonts',
+    '@nuxt/eslint',
+  ],
 
   googleFonts: {
     families: {
       Roboto: true,
-    }
+    },
   },
 
   primevue: {
     /* Configuration */
     options: {
       theme: {
-        preset: Aura
-      }
-    }
+        preset: Aura,
+      },
+    },
   },
 
-  compatibilityDate: '2024-07-10'
+  eslint: {
+    config: {
+      stylistic: true,
+    },
+  },
+
+  compatibilityDate: '2024-07-10',
 })
