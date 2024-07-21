@@ -14,7 +14,7 @@ const { $client } = useNuxtApp();
 const result = ref<unknown>({});
 
 const updateResult = async () => {
-  const queryResult = await $client.getAllUsers.query();
+  const queryResult = await $client.user.getUserCount.query();
   result.value = queryResult;
 };
 </script>
