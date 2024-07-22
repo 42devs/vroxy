@@ -1,68 +1,37 @@
-import { PrismaClient } from '@prisma/client';
-import argon2, { argon2id } from 'argon2';
+import { z } from 'zod';
+import argon2 from 'argon2';
+import { publicProcedure } from '~/server/trpc/trpc';
 
-const prisma = new PrismaClient({
-  omit: {
-    user: {
-      password: true,
-    }
-  }
+// Internal use variables
+const _secret = Buffer.from(process.env.MAIN_SECRET || 'localSecret');
+
+// User models to be imported on TRPC routes
+
+export const getAllUsers = publicProcedure.query(async ({ ctx }) => {
+  const result = ctx.prisma.user.findMany();
+  return result;
 });
 
-// Uses secret as pepper
-const secret = Buffer.from(process.env.MAIN_SECRET || 'localSecret');
+export const getUserCount = publicProcedure.query(async ({ ctx }) => await ctx.prisma.user.count());
 
-export const getUserCount = async () => await prisma.user.count();
-
-export const getUserByUsername = async (username: string) => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        username: username,
+export const registerUser = publicProcedure
+  .input(
+    z.object({
+      username: z.string()
+        .min(3)
+        .max(32),
+      password: z.string()
+        .min(6),
+    }),
+  )
+  .mutation(async ({ input, ctx }) => {
+    const { username, password } = input;
+    const hash = await argon2.hash(password, { secret: _secret });
+    const createdUser = await ctx.prisma.user.create({
+      data: {
+        username,
+        password: hash,
       },
     });
-    return user;
-  } catch (e) {
-    throw new Error('User Not Found');
-  }
-};
-
-export const getAllUsersByPage = async (size: number = 10, page : number = 1, take : number = 10) => {
-  const skip = size * (page - 1);
-  const userQuery = await prisma.user.findMany({
-    skip,
-    take,
+    return createdUser;
   });
-  return {
-    result: userQuery,
-    page,
-    previous: page > 1 ? page - 1 : undefined,
-    next: userQuery.length === take ? page + 1 : undefined,
-  };
-};
-
-export const createUser = async (username: string, password: string) => {
-  // Not using custom salt since is included in argon2
-  const hash = await argon2.hash(password, { secret });
-  const createdUser = await prisma.user.create({
-    data: {
-      username,
-      password: hash,
-    }
-  })
-  return createdUser;
-};
-
-export const validateUserPassword = async (username: string, password: string) => {
-  const user = await prisma.user.findUnique({
-    where: { username },
-    select: {
-      username: true,
-      password: true,
-    }
-  });
-  if (!user) throw new Error('User Not Found');
-  const result = await argon2.verify(user.password, password, { secret });
-  if (!result) throw new Error('Password Invalid');
-  return result;
-};
