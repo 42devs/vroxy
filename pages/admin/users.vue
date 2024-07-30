@@ -5,26 +5,40 @@
     </div>
     <ConfirmDialog />
     <DataTable
+      v-model:editingRows="editingRows"
       :loading="!userList"
       :value="userList"
+      data-key="id"
+      edit-mode="row"
+      @row-edit-save="onRowEditSave"
     >
       <Column
         v-for="col of userColumns"
         :key="col"
         :field="col"
         :header="col"
-      />
-      <Column>
-        <template #body>
-          <Button label="Edit" />
+      >
+        <template
+          v-if="editableFields.includes(col)"
+          #editor="{ data, field }"
+        >
+          <InputText
+            v-model="data[field]"
+            fluid
+          />
         </template>
       </Column>
+      <Column
+        :row-editor="true"
+        style="width: 10%; min-width: 8rem"
+        body-style="text-align:center"
+      />
       <Column>
         <template #body="slotProps">
           <Button
-            label="Delete"
             severity="danger"
-            @click="confirm1(slotProps.data.id)"
+            icon="pi pi-trash"
+            @click="confirmDelete(slotProps.data.id)"
           />
         </template>
       </Column>
@@ -33,6 +47,8 @@
 </template>
 
 <script setup lang="ts">
+import type { DataTableRowEditSaveEvent } from 'primevue/datatable';
+
 const { $client } = useNuxtApp();
 
 const userList = computedAsync(
@@ -47,10 +63,31 @@ const userColumns = computed(() => {
   return [];
 });
 
+const editableFields = ['username'];
+
+const editingRows = ref([]);
+
 const confirm = useConfirm();
 const toast = useToast();
 
-const confirm1 = (id: string) => {
+const onRowEditSave = async (payload: DataTableRowEditSaveEvent) => {
+  // TODO: Improve loading ui during mutation
+  const { newData, index } = payload;
+
+  const updatedUser = await $client.user.updateUser.mutate({ id: newData.id, data: newData });
+
+  const newUserList = userList.value?.map((value, rowIndex) => {
+    console.log('New User List Composing', value, rowIndex, index);
+    if (rowIndex === index) {
+      return updatedUser;
+    }
+    return value;
+  }) || [];
+
+  userList.value = newUserList;
+};
+
+const confirmDelete = (id: string) => {
   confirm.require({
     message: 'Are you sure you want to delete this User?',
     header: 'Danger Zone',
@@ -67,7 +104,8 @@ const confirm1 = (id: string) => {
         $client.user.deleteUser.mutate({ id });
         userList.value = userList.value?.filter(user => user.id !== id) || [];
         toast.add({ severity: 'info', summary: 'Confirmed', detail: 'User Deleted', life: 3000 });
-      } catch (e) {
+      }
+      catch (e) {
         console.log('Error deleting user', e);
         toast.add({ severity: 'error', summary: 'Error', detail: 'Error Deleting User', life: 3000 });
       }

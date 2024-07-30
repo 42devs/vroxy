@@ -39,17 +39,20 @@ export const registerUser = publicProcedure
 export const updateUser = publicProcedure
   .input(
     z.object({
-      username: z.string()
-        .min(3)
-        .max(32),
+      data: z.object({
+        username: z.string()
+          .min(3)
+          .max(32)
+          .optional(),
+      }),
       id: z.string(),
     }),
   )
   .mutation(async ({ input, ctx }) => {
-    const { username, id } = input;
+    const { data, id } = input;
     const updatedUser = await ctx.prisma.user.update({
       where: { id },
-      data: { username },
+      data,
     });
     return updatedUser;
   });
