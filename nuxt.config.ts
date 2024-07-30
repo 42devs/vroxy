@@ -7,7 +7,7 @@ export default defineNuxtConfig({
     transpile: ['trpc-nuxt'],
   },
 
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/main.scss'],
 
   modules: [
     '@primevue/nuxt-module',
