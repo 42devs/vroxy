@@ -35,6 +35,8 @@
   },
   "devDependencies": {
     "@primevue/nuxt-module": "^4.0.0",
+    "@vueuse/core": "^10.11.0",
+    "@vueuse/nuxt": "^10.11.0",
     "husky": "^9.1.1",
     "lint-staged": "^15.2.7",
     "prisma": "^5.16.2"
