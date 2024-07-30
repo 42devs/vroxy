@@ -1,7 +1,7 @@
 import { select, Separator } from '@inquirer/prompts';
+import { getUserCount } from '../../../server/models/user_old.js';
 import { manageUsers } from './manageUsers.js';
 import { createUser } from './createUser.js';
-import { getUserCount } from '../../../server/models/user.js';
 
 export const mainMenu = async (session: string = null) => {
   const userCount = await getUserCount();
@@ -17,7 +17,7 @@ export const mainMenu = async (session: string = null) => {
       {
         name: 'create',
         value: 'create',
-        description: `Create${ userCount === 0 ? ' First ' : ' ' }User`,
+        description: `Create${userCount === 0 ? ' First ' : ' '}User`,
       },
       {
         name: 'Log In',

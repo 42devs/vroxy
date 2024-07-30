@@ -1,17 +1,17 @@
 // Manage users script
 import { select, Separator } from '@inquirer/prompts';
-import { getAllUsersByPage } from '../../../server/models/user.js';
+import { getAllUsersByPage } from '../../../server/models/user_old.js';
 
 export const manageUsers = async () => {
   const userList = await getAllUsersByPage();
-  const userOptions = userList.result.map(user => {
+  const userOptions = userList.result.map((user) => {
     return {
       name: user.username,
       value: user.id,
     };
   });
   const option = await select({
-    message: `Page (${ userList.page }) / Select an option`,
+    message: `Page (${userList.page}) / Select an option`,
     choices: [
       ...userOptions,
       new Separator(),
