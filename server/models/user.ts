@@ -35,3 +35,35 @@ export const registerUser = publicProcedure
     });
     return createdUser;
   });
+
+export const updateUser = publicProcedure
+  .input(
+    z.object({
+      username: z.string()
+        .min(3)
+        .max(32),
+      id: z.string(),
+    }),
+  )
+  .mutation(async ({ input, ctx }) => {
+    const { username, id } = input;
+    const updatedUser = await ctx.prisma.user.update({
+      where: { id },
+      data: { username },
+    });
+    return updatedUser;
+  });
+
+export const deleteUser = publicProcedure
+  .input(
+    z.object({
+      id: z.string(),
+    }),
+  )
+  .mutation(async ({ input, ctx }) => {
+    const { id } = input;
+    const deletedUser = await ctx.prisma.user.delete({
+      where: { id },
+    });
+    return deletedUser;
+  });
