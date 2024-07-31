@@ -97,21 +97,22 @@ const confirmDelete = (id: string) => {
       severity: 'secondary',
     },
     acceptProps: {
-      label: 'Save',
+      label: 'Delete',
+      severity: 'danger',
     },
     accept: async () => {
       try {
-        $client.user.deleteUser.mutate({ id });
+        await $client.user.deleteUser.mutate({ id });
         userList.value = userList.value?.filter(user => user.id !== id) || [];
         toast.add({ severity: 'info', summary: 'Confirmed', detail: 'User Deleted', life: 3000 });
       }
       catch (e) {
         console.log('Error deleting user', e);
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Error Deleting User', life: 3000 });
+        toast.add({ severity: 'warn', summary: 'Error', detail: 'Error Deleting User', life: 3000 });
       }
     },
     reject: () => {
-      toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+      toast.add({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
     },
   });
 };
