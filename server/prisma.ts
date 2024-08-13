@@ -9,6 +9,8 @@ export const prisma = prismaGlobal.prisma ?? new PrismaClient({
   omit: {
     user: {
       password: true,
+      createdAt: true,
+      updatedAt: true,
     },
   },
 });
