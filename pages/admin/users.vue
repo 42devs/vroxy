@@ -71,13 +71,11 @@ const confirm = useConfirm();
 const toast = useToast();
 
 const onRowEditSave = async (payload: DataTableRowEditSaveEvent) => {
-  // TODO: Improve loading ui during mutation
   const { newData, index } = payload;
 
   const updatedUser = await $client.user.updateUser.mutate({ id: newData.id, data: newData });
 
   const newUserList = userList.value?.map((value, rowIndex) => {
-    console.log('New User List Composing', value, rowIndex, index);
     if (rowIndex === index) {
       return updatedUser;
     }

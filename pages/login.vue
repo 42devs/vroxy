@@ -1,9 +1,6 @@
 <template>
-  <p>This is the login page</p>
+  <Auth-Login />
 </template>
 
 <script setup lang="ts">
-console.log('Login Page Loaded');
-
-console.log('Login Page Loaded');
 </script>

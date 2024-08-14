@@ -3,7 +3,7 @@
     <Card>
       <template #title>
         <div class="flex justify-center py-3">
-          <h1>Registration</h1>
+          <h1>Login</h1>
         </div>
       </template>
       <template #content>
@@ -19,8 +19,8 @@
             type="password"
           />
           <Button
-            label="Register"
-            @click="registerUser"
+            label="Login"
+            @click="loginUser"
           />
         </div>
       </template>
@@ -44,10 +44,9 @@ const result = ref<unknown>(null);
 
 const error = ref<unknown>(null);
 
-const registerUser = async () => {
+const loginUser = async () => {
   try {
-    const userRegistered = await $client.user.registerUser.mutate({ username: user.value, password: password.value });
-    result.value = userRegistered;
+    await $client.auth.login.mutate({ username: user.value, password: password.value });
     error.value = null;
   }
   catch (e) {
