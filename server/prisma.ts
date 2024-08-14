@@ -8,7 +8,7 @@ const prismaGlobal = globalThis as typeof globalThis & {
 export const prisma = prismaGlobal.prisma ?? new PrismaClient({
   omit: {
     user: {
-      password: true,
+      password_hash: true,
       createdAt: true,
       updatedAt: true,
     },
