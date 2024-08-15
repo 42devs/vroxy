@@ -1,5 +1,5 @@
 import { appendHeader } from 'h3';
-import { publicProcedure } from '~/server/trpc/trpc';
+import { publicProcedure, signedInProcedure } from '~/server/trpc/trpc';
 import { verifyPassword } from '~/server/utils/hash';
 import { userLoginForm } from '~/server/forms/auth';
 
@@ -25,3 +25,17 @@ export const login = publicProcedure
     appendHeader(ctx.event, 'Set-Cookie', ctx.lucia.createSessionCookie(session.id).serialize());
     // await sendRedirect(ctx.event, '/admin/users');
   });
+
+export const logout = signedInProcedure
+  .mutation(async ({ ctx }) => {
+    if (!ctx.event.context.session) {
+      throw new Error('No Session');
+    }
+    await ctx.lucia.invalidateSession(ctx.event.context.session.id);
+    appendHeader(ctx.event, 'Set-Cookie', ctx.lucia.createBlankSessionCookie().serialize());
+    return true;
+  });
+
+export const getUser = signedInProcedure.query(async ({ ctx }) => {
+  return ctx.event.context.user;
+});

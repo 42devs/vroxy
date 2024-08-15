@@ -6,7 +6,6 @@ export default defineEventHandler((event) => {
     const originHeader = getHeader(event, 'Origin') ?? null;
     // NOTE: You may need to use `X-Forwarded-Host` instead
     const hostHeader = getHeader(event, 'Host') ?? null;
-    console.log('headers', originHeader, hostHeader);
     if (!originHeader || !hostHeader || !verifyRequestOrigin(originHeader, [hostHeader])) {
       return event.node.res.writeHead(403).end();
     }

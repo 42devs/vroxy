@@ -11,7 +11,6 @@ export const lucia = new Lucia(adapter, {
     },
   },
   getUserAttributes: (attributes: DatabaseUserAttributes) => {
-    console.log('GetUserAttributes', attributes);
     return {
       // attributes has the type of DatabaseUserAttributes
       username: attributes.username,

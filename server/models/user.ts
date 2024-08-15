@@ -1,13 +1,13 @@
-import { publicProcedure } from '~/server/trpc/trpc';
+import { publicProcedure, signedInProcedure } from '~/server/trpc/trpc';
 import { hashPassword } from '~/server/utils/hash';
 import { deleteUserForm, updateUserForm, userRegistrationForm } from '~/server/forms/auth';
 
-export const getAllUsers = publicProcedure.query(async ({ ctx }) => {
+export const getAllUsers = signedInProcedure.query(async ({ ctx }) => {
   const result = ctx.prisma.user.findMany();
   return result;
 });
 
-export const getUserCount = publicProcedure.query(async ({ ctx }) => await ctx.prisma.user.count());
+export const getUserCount = signedInProcedure.query(async ({ ctx }) => await ctx.prisma.user.count());
 
 export const registerUser = publicProcedure
   .input(userRegistrationForm)
@@ -23,7 +23,7 @@ export const registerUser = publicProcedure
     return createdUser;
   });
 
-export const updateUser = publicProcedure
+export const updateUser = signedInProcedure
   .input(updateUserForm)
   .mutation(async ({ input, ctx }) => {
     const { data, id } = input;
@@ -34,7 +34,7 @@ export const updateUser = publicProcedure
     return updatedUser;
   });
 
-export const deleteUser = publicProcedure
+export const deleteUser = signedInProcedure
   .input(deleteUserForm)
   .mutation(async ({ input, ctx }) => {
     const { id } = input;
