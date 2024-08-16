@@ -1,20 +1,31 @@
 <template>
   <div>
-    <Button
-      label="Click Me!"
-      @click="updateResult"
-    />
-    <pre>{{ result }}</pre>
+    <template v-if="authStore.user">
+      <p>Logged as:</p>
+      <pre>{{ authStore.user }}</pre>
+      <Button
+        v-if="authStore.user"
+        label="SignOut!"
+        @click.prevent="authStore.logout"
+      />
+    </template>
+    <template v-else>
+      <p>No user loaded, if you are seeing this, the middleware didn't worked</p>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-const { $client } = useNuxtApp();
+const authStore = auth();
 
-const result = ref<unknown>({});
+useHead({
+  title: 'Home Page',
+});
 
-const updateResult = async () => {
-  const queryResult = await $client.user.getUserCount.query();
-  result.value = queryResult;
-};
+definePageMeta({
+  title: 'Home',
+  middleware: [
+    'auth',
+  ],
+});
 </script>

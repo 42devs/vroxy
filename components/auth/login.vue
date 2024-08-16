@@ -17,41 +17,32 @@
             v-model="password"
             placeholder="Password"
             type="password"
+            @keyup.enter="handleLogin"
           />
           <Button
             label="Login"
-            @click="loginUser"
+            :loading="authStore.loading"
+            @click.prevent="handleLogin"
           />
         </div>
       </template>
     </Card>
-    <template v-if="error">
-      <pre>{{ error }}</pre>
-    </template>
-    <template v-if="result">
-      <pre>{{ result }}</pre>
-    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-const { $client } = useNuxtApp();
+const authStore = auth();
 
 const user = ref('');
 const password = ref('');
 
-const result = ref<unknown>(null);
-
-const error = ref<unknown>(null);
-
-const loginUser = async () => {
+const handleLogin = async () => {
   try {
-    await $client.auth.login.mutate({ username: user.value, password: password.value });
-    error.value = null;
+    await authStore.login(user.value, password.value);
   }
-  catch (e) {
-    error.value = e;
-    result.value = null;
+  catch {
+    user.value = '';
+    password.value = '';
   }
 };
 </script>

@@ -6,4 +6,10 @@ import { createContext } from '~/server/trpc/context';
 export default createNuxtApiHandler({
   router: appRouter,
   createContext,
+  onError: (opts) => {
+    const { error, path } = opts;
+    if (error.code === 'INTERNAL_SERVER_ERROR') {
+      console.error('Internal server error', error, path);
+    }
+  },
 });
