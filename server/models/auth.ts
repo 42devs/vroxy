@@ -17,14 +17,14 @@ export const login = publicProcedure
     if (!user) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
-        message: 'Not logged in',
+        message: 'Error login with the provided credentials',
       });
     }
     const valid = await verifyPassword(user.password_hash, password);
     if (!valid) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
-        message: 'Not logged in',
+        message: 'Error login with the provided credentials',
       });
     }
     const session = await ctx.lucia.createSession(user.id, {});

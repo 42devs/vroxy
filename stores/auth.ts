@@ -8,7 +8,6 @@ type UserOutput = routerOutput['auth']['getUser'] | null;
 export default defineStore('auth', () => {
   const user = ref<UserOutput>(null);
   const loading = ref(false);
-  const error = ref<string | null>(null);
 
   const { $client } = useNuxtApp();
 
@@ -16,9 +15,8 @@ export default defineStore('auth', () => {
     try {
       loading.value = true;
       const { result, message } = await $client.auth.login.mutate({ username, password });
-      // TODO: Replace with toast message
-      console.log('message: ', message);
       if (result === 'success') {
+        showSuccessToast(message);
         await getUser();
         loading.value = false;
         navigateTo('/');
@@ -26,7 +24,7 @@ export default defineStore('auth', () => {
     }
     catch (cause) {
       if (cause instanceof TRPCClientError) {
-        error.value = cause.message;
+        showErrorToast(cause.message);
       }
       loading.value = false;
       throw cause;
@@ -40,9 +38,6 @@ export default defineStore('auth', () => {
       user.value = result;
     }
     catch (cause) {
-      if (cause instanceof TRPCClientError) {
-        error.value = cause.message;
-      }
       user.value = null;
     }
     finally {
@@ -57,7 +52,8 @@ export default defineStore('auth', () => {
   // }
 
   const logout = async () => {
-    await $client.auth.logout.mutate();
+    const { message } = await $client.auth.logout.mutate();
+    showSuccessToast(message);
     user.value = null;
     navigateTo('/login');
   };
@@ -65,7 +61,6 @@ export default defineStore('auth', () => {
   return {
     user,
     loading,
-    error,
     login,
     logout,
     getUser,

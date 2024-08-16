@@ -68,7 +68,6 @@ const editableFields = ['username'];
 const editingRows = ref([]);
 
 const confirm = useConfirm();
-const toast = useToast();
 
 const onRowEditSave = async (payload: DataTableRowEditSaveEvent) => {
   const { newData, index } = payload;
@@ -102,15 +101,15 @@ const confirmDelete = (id: string) => {
       try {
         await $client.user.deleteUser.mutate({ id });
         userList.value = userList.value?.filter(user => user.id !== id) || [];
-        toast.add({ severity: 'info', summary: 'Confirmed', detail: 'User Deleted', life: 3000 });
+        // if runs in client runtime, use toast from primevue
+        showSuccessToast('User Deleted');
       }
       catch (e) {
-        console.log('Error deleting user', e);
-        toast.add({ severity: 'warn', summary: 'Error', detail: 'Error Deleting User', life: 3000 });
+        showErrorToast('Error deleting user');
       }
     },
     reject: () => {
-      toast.add({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+      showWarningToast('User Deletion Cancelled');
     },
   });
 };
