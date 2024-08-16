@@ -1,4 +1,4 @@
-import { appendHeader } from 'h3';
+import { TRPCError } from '@trpc/server';
 import { publicProcedure, signedInProcedure } from '~/server/trpc/trpc';
 import { verifyPassword } from '~/server/utils/hash';
 import { userLoginForm } from '~/server/forms/auth';
@@ -15,27 +15,38 @@ export const login = publicProcedure
       where: { username },
     });
     if (!user) {
-      throw new Error('Auth Failed');
+      throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Not logged in' });
     }
     const valid = await verifyPassword(user.password_hash, password);
     if (!valid) {
-      throw new Error('Auth Failed');
+      throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Not logged in' });
     }
     const session = await ctx.lucia.createSession(user.id, {});
     appendHeader(ctx.event, 'Set-Cookie', ctx.lucia.createSessionCookie(session.id).serialize());
-    // await sendRedirect(ctx.event, '/admin/users');
+    return {
+      result: 'success',
+      redirect: '/',
+    };
   });
 
 export const logout = signedInProcedure
   .mutation(async ({ ctx }) => {
     if (!ctx.event.context.session) {
-      throw new Error('No Session');
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'Not logged in' });
     }
     await ctx.lucia.invalidateSession(ctx.event.context.session.id);
     appendHeader(ctx.event, 'Set-Cookie', ctx.lucia.createBlankSessionCookie().serialize());
-    return true;
+    return {
+      result: 'success',
+      redirect: '/login',
+    };
   });
 
 export const getUser = signedInProcedure.query(async ({ ctx }) => {
   return ctx.event.context.user;
 });
+
+// export const getAllUserSessions = signedInProcedure.query(async ({ ctx }) => {
+//   const sessions = await ctx.lucia.getUserSessions(ctx.event.context.session.userId);
+//   return sessions;
+// });
