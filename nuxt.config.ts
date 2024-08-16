@@ -1,6 +1,12 @@
 import Aura from '@primevue/themes/aura';
 
 export default defineNuxtConfig({
+  app: {
+    pageTransition: {
+      name: 'page',
+      mode: 'in-out',
+    },
+  },
   devtools: { enabled: true },
 
   build: {
