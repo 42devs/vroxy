@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@nuxtjs/tailwindcss',
     '@vueuse/nuxt',
+    '@pinia/nuxt',
   ],
 
   googleFonts: {
