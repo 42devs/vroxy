@@ -8,17 +8,44 @@
       </template>
       <template #content>
         <div class="flex flex-col space-y-6">
-          <InputText
-            v-model="user"
-            placeholder="Username"
-            type="text"
-          />
-          <InputText
-            v-model="password"
-            placeholder="Password"
-            type="password"
-            @keyup.enter="handleLogin"
-          />
+          <div class="flex flex-col gap-2">
+            <label for="username">Username</label>
+            <InputText
+              id="username"
+              v-model="user"
+              type="text"
+              aria-describedby="username-help"
+            />
+            <template
+              v-if="authStore.fieldErrors['username']"
+            >
+              <small
+                v-for="error, index in authStore.fieldErrors['username']"
+                :key="index"
+              >
+                {{ error }}
+              </small>
+            </template>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="password">Password</label>
+            <InputText
+              id="password"
+              v-model="password"
+              type="password"
+              @keyup.enter="handleLogin"
+            />
+            <template
+              v-if="authStore.fieldErrors['password']"
+            >
+              <small
+                v-for="error, index in authStore.fieldErrors['password']"
+                :key="index"
+              >
+                {{ error }}
+              </small>
+            </template>
+          </div>
           <Button
             label="Login"
             :loading="authStore.loading"
@@ -40,7 +67,8 @@ const handleLogin = async () => {
   try {
     await authStore.login(user.value, password.value);
   }
-  catch {
+  catch (e) {
+    // Clean the form if there is an error
     user.value = '';
     password.value = '';
   }
